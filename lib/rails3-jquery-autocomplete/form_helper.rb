@@ -24,6 +24,10 @@ module ActionView
       def text_field_tag(name, value = nil, options = {})
         original_text_field_tag(name, value, rename_autocomplete_option(options))
       end
+     # alias_method :s_original_text_field_tag, :s_text_field_tag
+      def s_text_field_tag(name, value = nil, options = {})
+        original_text_field_tag(name, value, rename_autosuggest_option(options))
+      end
 
       # Creates a standard text field that can be populated with jQuery's autocomplete plugin
       #
@@ -35,6 +39,11 @@ module ActionView
         options[:autocomplete] = source
         text_field_tag(name, value, options)
       end
+      
+      def autosuggest_field_tag(name, value, source, options ={})
+        options[:autosuggest] = source
+        s_text_field_tag(name, value, options)
+      end
     end
 
     #
@@ -44,6 +53,10 @@ module ActionView
     private
     def rename_autocomplete_option(options)
       options["data-autocomplete"] = options.delete(:autocomplete)
+      options
+    end
+    def rename_autosuggest_option(options)
+      options["data-autosuggest"] = options.delete(:autosuggest)
       options
     end
   end
